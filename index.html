@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Digital Diary App</title>
+
+<style>
+html, body {
+  margin:0;
+  padding:0;
+  height:100%;
+  font-family: Arial, sans-serif;
+}
+
+body{
+  background: linear-gradient(135deg,#141e30,#243b55);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+header{
+  padding:25px;
+  font-size:32px;
+  font-weight:bold;
+}
+
+.date{
+  font-size:18px;
+  margin-bottom:20px;
+}
+
+.container{
+  width:90%;
+  max-width:700px;
+  background:rgba(255,255,255,0.1);
+  padding:25px;
+  border-radius:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+textarea{
+  width:100%;
+  height:120px;
+  border:none;
+  border-radius:10px;
+  padding:10px;
+  resize:none;
+  font-size:15px;
+  outline:none;
+}
+
+button{
+  margin-top:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  background:#00c6ff;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#0072ff;
+}
+
+.entry{
+  background:rgba(0,0,0,0.4);
+  margin-top:15px;
+  padding:10px;
+  border-radius:8px;
+}
+
+.entry-date{
+  font-size:12px;
+  opacity:0.7;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>📔 My Digital Diary</header>
+<div class="date" id="currentDate"></div>
+
+<div class="container">
+<textarea id="diaryText" placeholder="Write your thoughts here..."></textarea>
+<button onclick="saveEntry()">Save Entry</button>
+
+<div id="entries"></div>
+</div>
+
+<script>
+function updateDate(){
+  const now = new Date();
+  document.getElementById("currentDate").innerHTML =
+  now.toDateString();
+}
+updateDate();
+
+function saveEntry(){
+  const text = document.getElementById("diaryText").value;
+  if(text !== ""){
+    const entryDiv = document.createElement("div");
+    entryDiv.className="entry";
+
+    const dateDiv = document.createElement("div");
+    dateDiv.className="entry-date";
+    dateDiv.innerHTML = new Date().toLocaleString();
+
+    const textDiv = document.createElement("div");
+    textDiv.innerHTML = text;
+
+    entryDiv.appendChild(dateDiv);
+    entryDiv.appendChild(textDiv);
+
+    document.getElementById("entries").prepend(entryDiv);
+
+    document.getElementById("diaryText").value="";  }
+}
+</script>
+
+</body>
+</html>
