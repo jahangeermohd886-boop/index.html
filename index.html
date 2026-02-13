@@ -85,13 +85,40 @@ button:hover{
 <header>📔 My Digital Diary</header>
 <div class="date" id="currentDate"></div>
 
-<div class="container">
-<textarea id="diaryText" placeholder="Write your thoughts here..."></textarea>
-<button onclick="saveEntry()">Save Entry</button>
+<textarea placeholder="Write your thoughts here..."></textarea>
+<button>Save Entry</button>
 
-<div id="entries"></div>
+<div class="entries"></div>
 </div>
 
+<script>
+function updateDate(){
+  const now = new Date();
+  document.getElementById("currentDate").innerHTML =
+  now.toDateString();
+}
+updateDate();
+
+function saveEntry(){
+  const text = document.getElementById("diaryText").value;
+  if(text !== ""){
+    const entryDiv = document.createElement("div");
+    entryDiv.className="entry";
+
+    const dateDiv = document.createElement("div");
+    dateDiv.className="entry-date";
+    dateDiv.innerHTML = new Date().toLocaleString();
+
+    const textDiv = document.createElement("div");
+    textDiv.innerHTML = text;
+
+    entryDiv.appendChild(dateDiv);
+    entryDiv.appendChild(textDiv);
+
+    document.getElementById("entries").prepend(entryDiv);
+
+    document.getElementById("diaryText").value="";  }
+}
 <script>
 function updateDate(){
   const now = new Date();
