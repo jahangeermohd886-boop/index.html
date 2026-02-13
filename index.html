@@ -1,153 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Digital Diary App</title>
+    <title>My Digital Diary</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1f2c3d, #2e4057);
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-<style>
-html, body {
-  margin:0;
-  padding:0;
-  height:100%;
-  font-family: Arial, sans-serif;
-}
+        .card {
+            background: #0f1a24;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            color: white;
+        }
 
-body{
-  background: linear-gradient(135deg,#141e30,#243b55);
-  color:white;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+        h2 {
+            text-align: center;
+        }
 
-header{
-  padding:25px;
-  font-size:32px;
-  font-weight:bold;
-}
+        textarea {
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+            border: none;
+            padding: 10px;
+            resize: none;
+            font-size: 14px;
+        }
 
-.date{
-  font-size:18px;
-  margin-bottom:20px;
-}
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            background: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-.container{
-  width:90%;
-  max-width:700px;
-  background:rgba(255,255,255,0.1);
-  padding:25px;
-  border-radius:15px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
-}
+        button:hover {
+            background: #45a049;
+        }
 
-textarea{
-  width:100%;
-  height:120px;
-  border:none;
-  border-radius:10px;
-  padding:10px;
-  resize:none;
-  font-size:15px;
-  outline:none;
-}
+        .entries {
+            margin-top: 20px;
+        }
 
-button{
-  margin-top:10px;
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  background:#00c6ff;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover{
-  background:#0072ff;
-}
-
-.entry{
-  background:rgba(0,0,0,0.4);
-  margin-top:15px;
-  padding:10px;
-  border-radius:8px;
-}
-
-.entry-date{
-  font-size:12px;
-  opacity:0.7;
-}
-</style>
-
+        .entry {
+            background: #1e2a38;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <body>
 
-<header>📔 My Digital Diary</header>
-<div class="date" id="currentDate"></div>
+<div class="card">
+    <h2>My Digital Diary</h2>
 
-<textarea placeholder="Write your thoughts here..."></textarea>
-<button>Save Entry</button>
+    <textarea id="diaryText" placeholder="Write your thoughts here..."></textarea>
+    <button onclick="saveEntry()">Save Entry</button>
 
-<div class="entries"></div>
+    <div class="entries" id="entries"></div>
 </div>
 
 <script>
-function updateDate(){
-  const now = new Date();
-  document.getElementById("currentDate").innerHTML =
-  now.toDateString();
+function loadEntries() {
+    const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+    const container = document.getElementById("entries");
+    container.innerHTML = "";
+
+    entries.forEach(text => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.innerText = text;
+        container.appendChild(div);
+    });
 }
-updateDate();
 
-function saveEntry(){
-  const text = document.getElementById("diaryText").value;
-  if(text !== ""){
-    const entryDiv = document.createElement("div");
-    entryDiv.className="entry";
+function saveEntry() {
+    const textarea = document.getElementById("diaryText");
+    const text = textarea.value.trim();
 
-    const dateDiv = document.createElement("div");
-    dateDiv.className="entry-date";
-    dateDiv.innerHTML = new Date().toLocaleString();
+    if (text === "") return;
 
-    const textDiv = document.createElement("div");
-    textDiv.innerHTML = text;
+    const entries = JSON.parse(localStorage.getItem("diaryEntries")) || [];
+    entries.push(text);
+    localStorage.setItem("diaryEntries", JSON.stringify(entries));
 
-    entryDiv.appendChild(dateDiv);
-    entryDiv.appendChild(textDiv);
-
-    document.getElementById("entries").prepend(entryDiv);
-
-    document.getElementById("diaryText").value="";  }
+    textarea.value = "";
+    loadEntries();
 }
-<script>
-function updateDate(){
-  const now = new Date();
-  document.getElementById("currentDate").innerHTML =
-  now.toDateString();
-}
-updateDate();
 
-function saveEntry(){
-  const text = document.getElementById("diaryText").value;
-  if(text !== ""){
-    const entryDiv = document.createElement("div");
-    entryDiv.className="entry";
-
-    const dateDiv = document.createElement("div");
-    dateDiv.className="entry-date";
-    dateDiv.innerHTML = new Date().toLocaleString();
-
-    const textDiv = document.createElement("div");
-    textDiv.innerHTML = text;
-
-    entryDiv.appendChild(dateDiv);
-    entryDiv.appendChild(textDiv);
-
-    document.getElementById("entries").prepend(entryDiv);
-
-    document.getElementById("diaryText").value="";  }
-}
+loadEntries();
 </script>
 
 </body>
-</html>
+</html
